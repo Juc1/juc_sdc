@@ -1,0 +1,5 @@
+name: "JUC SDC"
+type: module
+description: "A reusable suite of custom Single Directory Components (SDC) for Drupal 10.3 and Drupal 11."
+package: "Custom"
+core_version_requirement: ^10.3 || ^11
