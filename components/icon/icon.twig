@@ -1,0 +1,95 @@
+{#
+  Icon component using SVG icons from the Phosphor icon pack.
+
+  @param icon (string) - The icon ID from the Phosphor icon library (e.g., 'rocket', 'arrow-right')
+  @param icon_size (string) - Size enum: 'extra-extra-small', 'extra-small', 'small', 'medium', 'large', 'extra-large'
+  @param color (string) - Color option: 'current', 'primary', 'secondary', 'accent', 'neutral', 'muted', 'destructive'
+  @param icon_color (string) - Direct color override (e.g. hex, rgb, or css variable) for backward compatibility
+  @param url (string) - Optional link URL to wrap the icon
+  @param target (string) - Optional link target ('_self', '_blank')
+  @param alt (string) - Optional alt text for accessibility (leave empty for decorative icons)
+#}
+
+{% set size_map = {
+  'extra-extra-small': 16,
+  'extra-small': 20,
+  small: 24,
+  medium: 32,
+  large: 48,
+  'extra-large': 64
+} %}
+
+{% set resolved_size = size_map[icon_size]|default(size_map['small']) %}
+
+{# Map theme color options to CSS variables for fill and text utility classes #}
+{% set selected_color = color|default('current') %}
+
+{% set color_fill_map = {
+  current: 'currentColor',
+  primary: 'var(--color-primary, var(--primary))',
+  secondary: 'var(--color-secondary, var(--secondary))',
+  accent: 'var(--color-accent, var(--accent))',
+  neutral: 'var(--color-neutral)',
+  muted: 'var(--color-muted-foreground, var(--muted-foreground))',
+  destructive: 'var(--color-destructive, var(--destructive))'
+} %}
+
+{% set color_class_map = {
+  current: 'text-current',
+  primary: 'text-primary',
+  secondary: 'text-secondary',
+  accent: 'text-accent',
+  neutral: 'text-neutral',
+  muted: 'text-muted-foreground',
+  destructive: 'text-destructive'
+} %}
+
+{% set resolved_fill = icon_color|default(color_fill_map[selected_color]|default(selected_color|default('currentColor'))) %}
+{% set color_class = color_class_map[selected_color]|default('') %}
+
+{% set link_url = url|default(href)|default(link) %}
+{% set is_link = link_url is not empty %}
+{% set link_target = target|default('_self') %}
+
+{% set base_classes = [
+  'inline-flex',
+  'items-center',
+  'justify-center',
+  'shrink-0',
+  color_class,
+  'min-w:' ~ resolved_size
+]|filter(v => v is not empty)|join(' ') %}
+
+{% set rendered_icon %}
+  {{
+    icon(
+      'phosphor',
+      icon,
+      {
+        size: resolved_size,
+        color: resolved_fill,
+        alt: is_link ? '' : alt|default('')
+      }
+    )
+  }}
+{% endset %}
+
+{% if is_link %}
+  <a
+    href="{{ link_url }}"
+    class="{{ base_classes }} transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2"
+    {% if link_target == '_blank' %}
+      target="_blank"
+      rel="noopener noreferrer"
+    {% endif %}
+    {% if alt %}
+      aria-label="{{ alt }}"
+    {% endif %}
+  >
+    {{ rendered_icon }}
+  </a>
+{% else %}
+  <div class="{{ base_classes }}">
+    {{ rendered_icon }}
+  </div>
+{% endif %}

@@ -1,0 +1,86 @@
+$schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
+name: Icon
+group: Base
+status: stable
+props:
+  type: object
+  required:
+    - icon
+    - icon_size
+  properties:
+    icon:
+      type: string
+      title: Icon name
+      description: 'The ID of an icon from the <a href="https://phosphoricons.com" target="_blank">Phosphor Icons</a> library.'
+      default: "rocket"
+      examples:
+        - "rocket"
+    icon_size:
+      type: string
+      title: Icon size
+      enum:
+        - extra-small
+        - small
+        - medium
+        - large
+        - extra-large
+      meta:enum:
+        extra-small: Extra small
+        small: Small
+        medium: Medium
+        large: Large
+        extra-large: Extra large
+      default: small
+      examples:
+        - small
+    color:
+      type: string
+      title: Color
+      description: "Color / fill option for the icon."
+      enum:
+        - current
+        - primary
+        - secondary
+        - accent
+        - neutral
+        - muted
+        - destructive
+      meta:enum:
+        current: Current color (inherit)
+        primary: Primary
+        secondary: Secondary
+        accent: Accent
+        neutral: Neutral
+        muted: Muted
+        destructive: Destructive
+      default: current
+      examples:
+        - current
+        - primary
+        - secondary
+    url:
+      type: string
+      title: Link URL
+      description: "Optional URL to wrap the icon in a clickable link."
+      format: uri-reference
+      examples:
+        - "https://example.com"
+    target:
+      type: string
+      title: Link target
+      description: "Target frame for the link."
+      enum:
+        - _self
+        - _blank
+      meta:enum:
+        _self: Same window (_self)
+        _blank: New window (_blank)
+      default: _self
+      examples:
+        - _self
+    alt:
+      type: string
+      title: Alt text / Accessibility label
+      description: "Alternative text for accessibility. Recommended when wrapping in a link or for non-decorative icons."
+      examples:
+        - "Visit link"

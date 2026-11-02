@@ -5,6 +5,7 @@ A modular, framework-agnostic collection of reusable Single Directory Components
 ## Components
 
 - **[Group](components/group/README.md)** (`juc_sdc:group`): Flexible, responsive flexbox layout container supporting responsive directions (`responsive-md`, `responsive-lg`), gaps, alignments, and padding.
+- **[Icon](components/icon/README.md)** (`juc_sdc:icon`): Accessible SVG icon component supporting the Phosphor icon set, semantic color mapping, sizing presets, and optional link wrapping.
 
 ## Installation
 
