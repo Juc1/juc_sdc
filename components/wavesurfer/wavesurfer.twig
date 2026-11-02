@@ -1,0 +1,107 @@
+{#
+/**
+ * @file
+ * Component template for WaveSurfer Audio Player.
+ *
+ * @prop src (string): Audio MP3 URL.
+ * @prop downloadable (boolean): Whether to display the download button (default: true).
+ */
+#}
+
+{{ attach_library('juc_sdc/wavesurfer') }}
+
+{% set audio_src = src|default(url)|default('')|render|striptags|trim %}
+{% set show_download = downloadable is not defined or downloadable ? true : false %}
+{% set player_attributes = attributes is defined and attributes is not empty ? attributes : create_attribute() %}
+
+{% if audio_src is not empty %}
+  <div {{ player_attributes.addClass('player-wrapper', 'card', 'bg-base-100', 'border', 'border-base-300', 'shadow-sm', 'rounded-box', 'w-full', 'box-border', 'px-4', 'pt-8', 'pb-4', 'sm:px-6', 'sm:pt-11', 'sm:pb-6') }}>
+    <div class="player-container flex items-start gap-4 w-full">
+      <!-- Native streaming audio element: enables instant progressive playback in 1-2s -->
+      <audio class="player-audio hidden" src="{{ audio_src }}" preload="metadata" playsinline></audio>
+
+      <!-- Circular Play/Pause button placed inline before the waveform -->
+      <button
+        class="play-pause flex size-12 min-w-12 shrink-0 items-center justify-center rounded-full bg-primary text-white p-0 border-none cursor-pointer shadow-md transition-all duration-200 hover:scale-105 hover:bg-primary/85 active:scale-95 [&.playing]:bg-secondary [&.playing:hover]:bg-secondary/85 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2"
+        type="button"
+        aria-label="{{ 'Play'|t }}"
+        title="{{ 'Play / Pause'|t }}"
+      >
+        <!-- Play icon: Phosphor play -->
+        <svg class="icon-play ml-0.5 size-5 fill-white text-white" viewBox="0 0 256 256" fill="currentColor">
+          <path d="M232.4,114.49,88.32,26.35a16,16,0,0,0-16.2-.3A15.86,15.86,0,0,0,64,39.87V216.13A15.94,15.94,0,0,0,80,232a16.07,16.07,0,0,0,8.36-2.35L232.4,141.51a15.81,15.81,0,0,0,0-27ZM80,215.94V40l143.83,88Z"/>
+        </svg>
+        <!-- Pause icon: Phosphor pause -->
+        <svg class="icon-pause size-5 fill-white text-white" viewBox="0 0 256 256" fill="currentColor">
+          <path d="M200,32H160a16,16,0,0,0-16,16V208a16,16,0,0,0,16,16h40a16,16,0,0,0,16-16V48A16,16,0,0,0,200,32Zm0,176H160V48h40ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Zm0,176H56V48H96Z"/>
+        </svg>
+      </button>
+
+      <!-- Waveform and time metadata section -->
+      <div class="player-waveform-section flex-1 flex flex-col gap-1.5 min-w-0">
+        <!-- Container where WaveSurfer renders the audio waveform canvas -->
+        <div
+          class="waveform group relative w-full min-h-12 cursor-pointer bg-transparent rounded-md overflow-hidden"
+          data-url="{{ audio_src }}"
+        >
+          <!-- Hover bar indicating scrub position under cursor -->
+          <div class="hover pointer-events-none absolute inset-y-0 left-0 z-10 w-0 mix-blend-overlay bg-white/50 opacity-0 transition-opacity duration-200 group-hover:opacity-100"></div>
+        </div>
+
+        <!-- Time row placed below the waveform: current position (left), skip buttons (center), duration (right) -->
+        <div class="player-time-row flex items-center justify-between w-full px-px leading-none">
+          <div class="time flex-1 text-left text-xs font-medium text-primary bg-transparent leading-none tabular-nums whitespace-nowrap select-none">
+            0:00
+          </div>
+
+          <!-- Skip buttons centered directly below the waveform -->
+          <div class="player-skip-controls flex items-center justify-center gap-2 sm:gap-3 shrink-0">
+            <!-- Rewind 15 seconds button -->
+            <button
+              class="rewind-15 flex size-7 sm:size-8 shrink-0 items-center justify-center rounded-full bg-primary p-1 text-white border-none cursor-pointer shadow-sm transition-all duration-200 hover:bg-primary/85 hover:scale-110 active:scale-95 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
+              type="button"
+              aria-label="{{ 'Rewind 15 seconds'|t }}"
+              title="{{ 'Rewind 15 seconds'|t }}"
+            >
+              <svg class="size-4.5 sm:size-5 fill-white text-white" viewBox="0 0 256 256" fill="currentColor">
+                <path d="M223.77,58a16,16,0,0,0-16.25.53L128,109.14V71.84A15.91,15.91,0,0,0,103.52,58.5L15.33,114.66a15.8,15.8,0,0,0,0,26.68l88.19,56.16A15.91,15.91,0,0,0,128,184.16v-37.3l79.52,50.64A15.91,15.91,0,0,0,232,184.16V71.84A15.83,15.83,0,0,0,223.77,58ZM112,183.93,24.18,128,112,72.06Zm104,0L128.18,128,216,72.06Z"/>
+              </svg>
+            </button>
+
+            <!-- Forward 15 seconds button -->
+            <button
+              class="forward-15 flex size-7 sm:size-8 shrink-0 items-center justify-center rounded-full bg-primary p-1 text-white border-none cursor-pointer shadow-sm transition-all duration-200 hover:bg-primary/85 hover:scale-110 active:scale-95 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
+              type="button"
+              aria-label="{{ 'Forward 15 seconds'|t }}"
+              title="{{ 'Forward 15 seconds'|t }}"
+            >
+              <svg class="size-4.5 sm:size-5 fill-white text-white" viewBox="0 0 256 256" fill="currentColor">
+                <path d="M248.67,114.66,160.48,58.5A15.91,15.91,0,0,0,136,71.84v37.3L56.48,58.5A15.91,15.91,0,0,0,32,71.84V184.16A15.92,15.92,0,0,0,56.48,197.5L136,146.86v37.3a15.92,15.92,0,0,0,24.48,13.34l88.19-56.16a15.8,15.8,0,0,0,0-26.68ZM48,183.94V72.07L135.82,128Zm104,0V72.07L239.82,128Z"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="duration flex-1 text-right text-xs font-medium text-primary bg-transparent leading-none tabular-nums whitespace-nowrap select-none">
+            0:00
+          </div>
+        </div>
+      </div>
+
+      <!-- Download button placed inline after the waveform section -->
+      {% if show_download %}
+        <a
+          class="download-btn hidden md:flex size-12 min-w-12 shrink-0 items-center justify-center p-2 rounded-full bg-primary text-white border-none no-underline leading-none cursor-pointer shadow-md transition-all duration-200 hover:bg-primary/85 hover:scale-105 active:scale-95 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
+          href="{{ audio_src }}"
+          download
+          aria-label="{{ 'Download Audio Track'|t }}"
+          title="{{ 'Download Audio Track'|t }}"
+        >
+          <!-- Download icon: Phosphor download-simple -->
+          <svg class="size-5.5 fill-white text-white" viewBox="0 0 256 256" fill="currentColor">
+            <path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z"/>
+          </svg>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}

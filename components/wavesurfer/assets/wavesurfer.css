@@ -1,0 +1,332 @@
+/* Component styles for WaveSurfer Audio Player */
+
+/* Outer wrapper surrounding the entire player component */
+.player-wrapper:not(.card) {
+  background: var(--color-base-100, #fdf9f3); /* Theme warm ivory background */
+  border: 1px solid var(--color-base-300, #e4d8c8); /* Subtle border matching daisyUI */
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* Subtle shadow-sm */
+  padding: 16px 20px; /* Inner padding around all player elements */
+  border-radius: var(--radius-box, 8px); /* Rounded corners */
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Flex container aligning the circular play button, waveform section, and download icon horizontally */
+.player-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+}
+
+/* Waveform section wrapper holding the waveform canvas and the time row underneath */
+.player-waveform-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0; /* Prevents flex children from overflowing */
+}
+
+/* Hide the native audio element while keeping it active for streaming */
+.player-audio {
+  display: none !important;
+}
+
+/* Main container for the waveform rendering */
+#waveform,
+.waveform {
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+  background: transparent; /* No background fill so the wrapper's #F9F9FB color shows through seamlessly */
+  border-radius: 6px;
+  overflow: hidden;
+  min-height: 48px;
+}
+
+/* Subtle loading shimmer placeholder while audio is downloading/decoding */
+#waveform.is-loading::before,
+.waveform.is-loading::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(200, 190, 180, 0.12) 25%, rgba(200, 190, 180, 0.3) 50%, rgba(200, 190, 180, 0.12) 75%);
+  background-size: 200% 100%;
+  animation: ws-shimmer 1.5s infinite;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+@keyframes ws-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Translucent overlay that follows the mouse cursor on hover to preview seek position */
+#hover,
+.hover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  pointer-events: none; /* Prevents overlay from blocking clicks/drags to the waveform underneath */
+  height: 100%;
+  width: 0;
+  mix-blend-mode: overlay;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Show the hover overlay when hovering over the waveform area */
+#waveform:hover #hover,
+.waveform:hover .hover {
+  opacity: 1;
+}
+
+/* Row below the waveform: current position on left, skip controls centered, duration on right */
+.player-time-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 1px;
+  line-height: 1;
+}
+
+/* Both current position (#time) and track duration (#duration): grey text, no background */
+#time,
+.time,
+#duration,
+.duration {
+  color: var(--color-primary); /* daisyUI primary (Midnight Navy) */
+  background: none; /* No background fill as requested */
+  font-size: 12px; /* Clean, readable small typography */
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums; /* Monospaced digits to prevent layout shifts */
+  white-space: nowrap; /* Keep time string on a single line */
+  user-select: none; /* Prevent accidental text highlight while clicking or scrubbing */
+  flex: 1;
+}
+
+#time,
+.time {
+  text-align: left;
+}
+
+#duration,
+.duration {
+  text-align: right;
+}
+
+/* Skip controls centered directly below the waveform */
+.player-skip-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Rewind and Forward 15s buttons */
+#rewind-15,
+.rewind-15,
+#forward-15,
+.forward-15 {
+  background: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--color-primary) 30%, transparent);
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  cursor: pointer;
+  line-height: 1;
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
+}
+
+#rewind-15:hover,
+.rewind-15:hover,
+#forward-15:hover,
+.forward-15:hover {
+  background: color-mix(in srgb, var(--color-primary) 85%, black);
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+#rewind-15:active,
+.rewind-15:active,
+#forward-15:active,
+.forward-15:active {
+  transform: scale(0.95);
+}
+
+#rewind-15:focus-visible,
+.rewind-15:focus-visible,
+#forward-15:focus-visible,
+.forward-15:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Circular Play/Pause button styling */
+#play-pause,
+.play-pause {
+  /* Circular dimensions */
+  width: 48px;
+  height: 48px;
+  min-width: 48px; /* Prevents button from shrinking in the flex row */
+  border-radius: 50%; /* Makes the button a perfect circle */
+
+  /* Center the SVG icon inside the circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Button colors: blue when paused / not playing */
+  background: var(--color-primary); /* daisyUI primary (Navy Blue) */
+  color: #ffffff;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary) 35%, transparent);
+}
+
+/* Subtle zoom and color shift on button hover (paused state) */
+#play-pause:hover,
+.play-pause:hover {
+  background: color-mix(in srgb, var(--color-primary) 85%, black);
+  transform: scale(1.06);
+}
+
+/* Active playing state: switch to orange */
+#play-pause.playing,
+.play-pause.playing {
+  background: var(--color-secondary); /* daisyUI secondary (Burnt Orange) */
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-secondary) 35%, transparent);
+}
+
+#play-pause.playing:hover,
+.play-pause.playing:hover {
+  background: color-mix(in srgb, var(--color-secondary) 85%, black);
+}
+
+/* Tactile press response */
+#play-pause:active,
+.play-pause:active {
+  transform: scale(0.96);
+}
+
+/* High-contrast accessibility outline on keyboard focus */
+#play-pause:focus-visible,
+.play-pause:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* By default (paused/stopped), show the Play triangle */
+#play-pause .icon-play,
+.play-pause .icon-play {
+  display: block;
+  /* Optical alignment: shift triangle 1.5px right so its visual center matches the circle center */
+  margin-left: 2px;
+  fill: #ffffff;
+}
+
+/* By default (paused/stopped), hide the Pause bars */
+#play-pause .icon-pause,
+.play-pause .icon-pause {
+  display: none;
+  fill: #ffffff;
+}
+
+/* When playback is active (.playing class added via JS), toggle icon visibility */
+#play-pause.playing .icon-play,
+.play-pause.playing .icon-play {
+  display: none;
+}
+
+#play-pause.playing .icon-pause,
+.play-pause.playing .icon-pause {
+  display: block;
+  margin-left: 0;
+  fill: #ffffff;
+}
+
+/* Download button/link styling - hidden on mobile (< 768px), flex on tablet/desktop */
+#download-btn,
+.download-btn {
+  display: none;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-primary) 35%, transparent);
+
+  /* Align 48px height with play button and waveform */
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+
+  /* Ensure a comfortable touch/click target area and center the SVG */
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+
+  color: #ffffff;
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1;
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
+}
+
+@media (min-width: 768px) {
+  #download-btn,
+  .download-btn {
+    display: flex;
+  }
+}
+
+/* Hover state: highlight icon with slightly darker blue */
+#download-btn:hover,
+.download-btn:hover {
+  background: color-mix(in srgb, var(--color-primary) 85%, black);
+  color: #ffffff;
+  transform: scale(1.06);
+}
+
+/* Tactile press response */
+#download-btn:active,
+.download-btn:active {
+  transform: scale(0.95);
+}
+
+/* High-contrast accessibility outline on keyboard focus */
+#download-btn:focus-visible,
+.download-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 50%;
+}

@@ -1,0 +1,24 @@
+"$schema": "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
+name: WaveSurfer Audio Player
+group: Media
+status: stable
+description: "Interactive SoundCloud-style audio waveform player powered by WaveSurfer.js."
+props:
+  type: object
+  required:
+    - src
+  properties:
+    src:
+      type: string
+      title: Audio MP3 URL
+      description: "URL or path of the MP3 file to stream and visualize."
+      format: uri-reference
+      examples:
+        - "https://example.com/audio.mp3"
+    downloadable:
+      type: boolean
+      title: Show download button
+      description: "Whether to display the inline download button."
+      default: true
+      examples:
+        - true

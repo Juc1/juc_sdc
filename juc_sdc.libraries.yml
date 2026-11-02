@@ -1,0 +1,8 @@
+wavesurfer:
+  css:
+    component:
+      components/wavesurfer/assets/wavesurfer.css: {}
+  js:
+    components/wavesurfer/assets/wavesurfer.js: { minified: true }
+  dependencies:
+    - core/drupal
