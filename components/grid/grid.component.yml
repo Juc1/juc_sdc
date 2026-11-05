@@ -1,0 +1,103 @@
+$schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
+name: Grid
+description: "Lightweight, responsive CSS Grid layout container for equal-width columns and equal-height cards."
+group: Layout
+status: stable
+props:
+  type: object
+  properties:
+    columns:
+      type: string
+      title: Columns (Desktop)
+      description: "Number of columns on desktop screens (>= 1024px)."
+      enum:
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "5"
+        - "6"
+      default: "3"
+      meta:enum:
+        "1": "1 Column (Full width)"
+        "2": "2 Columns (Half width)"
+        "3": "3 Columns (Thirds - recommended for cards)"
+        "4": "4 Columns (Quarters)"
+        "5": "5 Columns"
+        "6": "6 Columns"
+      examples:
+        - "3"
+    columns_tablet:
+      type: string
+      title: Columns (Tablet)
+      description: "Number of columns on tablet / medium screens (768px - 1023px)."
+      enum:
+        - auto
+        - "1"
+        - "2"
+        - "3"
+      default: auto
+      meta:enum:
+        auto: "Auto (2 columns for multi-col desktop)"
+        "1": "1 Column"
+        "2": "2 Columns"
+        "3": "3 Columns"
+      examples:
+        - auto
+    columns_mobile:
+      type: string
+      title: Columns (Mobile)
+      description: "Number of columns on mobile screens (< 768px)."
+      enum:
+        - "1"
+        - "2"
+      default: "1"
+      meta:enum:
+        "1": "1 Column (Stacked)"
+        "2": "2 Columns (Side-by-side)"
+      examples:
+        - "1"
+    gap:
+      type: string
+      title: Space Between Items
+      description: "Spacing gap between grid rows and columns."
+      enum:
+        - none
+        - sm
+        - md
+        - lg
+        - xl
+      default: md
+      meta:enum:
+        none: "None (gap-0)"
+        sm: "Small (gap-4)"
+        md: "Medium (gap-6 - recommended)"
+        lg: "Large (gap-8)"
+        xl: "Extra Large (gap-12)"
+      examples:
+        - md
+    items_align:
+      type: string
+      title: Vertical Alignment (Row Stretch)
+      description: "Row height alignment. Stretch automatically makes cards match the height of the tallest card."
+      enum:
+        - stretch
+        - start
+        - center
+        - end
+      default: stretch
+      meta:enum:
+        stretch: "Stretch (Equal height cards - recommended)"
+        start: "Top / Start (Natural content height)"
+        center: "Center"
+        end: "Bottom / End"
+      examples:
+        - stretch
+    grid_classes:
+      type: string
+      title: Additional Classes
+      description: "Extra CSS utility classes to apply to the grid container."
+slots:
+  content:
+    title: Grid Content
+    description: "Drop cards, teaser items, or any components to arrange in the grid."

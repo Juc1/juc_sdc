@@ -1,0 +1,291 @@
+{# Boolean for conditionals #}
+{% set has_background_image = background_media is not empty and background_media.src is not empty %}
+{# String for CVA variants #}
+{% set has_background_image_variant = has_background_image ? 'yes' : 'no' %}
+
+{% set is_full_width_bg = true %}
+{% if
+  full_width_background is defined
+    and (full_width_background is same as(false) or full_width_background == '0' or full_width_background == 'false') %}
+  {% set is_full_width_bg = false %}
+{% endif %}
+
+{% set section =
+  html_cva(
+    base: ['@container relative mx-auto flex flex-col items-stretch'],
+    variants: {
+      width: {
+        '100%': 'lg:max-w-full',
+        '90%': 'lg:max-w-9/10',
+        '80%': 'lg:max-w-8/10',
+        '75%': 'lg:max-w-3/4',
+        '50%': 'lg:max-w-1/2',
+        '33%': 'lg:max-w-1/3'
+      },
+      marginBlockStart: {
+        '0': 'mt-0',
+        '8': 'mt-2',
+        '20': 'mt-5',
+        '32': 'mt-6 md:mt-7 xl:mt-8',
+        '48': 'mt-8 md:mt-10 xl:mt-12',
+        '64': 'mt-10 md:mt-13 xl:mt-16',
+        '96': 'mt-16 md:mt-20 xl:mt-24',
+        '128': 'mt-20 md:mt-24 xl:mt-32',
+        '192': 'mt-32 md:mt-40 xl:mt-48',
+        '256': 'mt-40 md:mt-48 xl:mt-64'
+      },
+      marginBlockEnd: {
+        '0': 'mb-0',
+        '8': 'mb-2',
+        '20': 'mb-5',
+        '32': 'mb-6 md:mb-7 xl:mb-8',
+        '48': 'mb-8 md:mb-10 xl:mb-12',
+        '64': 'mb-10 md:mb-13 xl:mb-16',
+        '96': 'mb-16 md:mb-20 xl:mb-24',
+        '128': 'mb-20 md:mb-24 xl:mb-32',
+        '192': 'mb-32 md:mb-40 xl:mb-48',
+        '256': 'mb-40 md:mb-48 xl:mb-64'
+      },
+      paddingBlockStart: {
+        '0': 'pt-0',
+        '16': 'pt-4',
+        '32': 'pt-6 md:pt-7 xl:pt-8',
+        '64': 'pt-10 md:pt-13 xl:pt-16'
+      },
+      paddingBlockEnd: {
+        '0': 'pb-0',
+        '16': 'pb-4',
+        '32': 'pb-6 md:pb-7 xl:pb-8',
+        '64': 'pb-10 md:pb-13 xl:pb-16'
+      },
+      paddingLeft: {
+        '0': 'pl-0',
+        '8': 'pl-2',
+        '16': 'pl-4',
+        '32': 'pl-6 md:pl-7 xl:pl-8',
+        '48': 'pl-8 md:pl-10 xl:pl-12',
+        '64': 'pl-10 md:pl-13 xl:pl-16',
+        '96': 'pl-16 md:pl-20 xl:pl-24',
+        '128': 'pl-20 md:pl-24 xl:pl-32'
+      },
+      backgroundColor: {
+        default: 'text-foreground',
+        primary: 'text-primary-foreground',
+        secondary: 'text-secondary-foreground',
+        accent: 'text-accent-foreground',
+        muted: 'text-muted-foreground',
+        'base-200': 'text-base-content',
+        blue: 'text-black',
+        pink: 'text-black',
+        purple: 'text-white',
+        'radley-blue': 'text-black',
+        'radley-purple': 'text-white',
+        noColor: 'text-foreground'
+      }
+    }
+  )
+%}
+
+{% set section_classes =
+  section.apply({
+    marginBlockStart: margin_block_start,
+    marginBlockEnd: margin_block_end,
+    paddingBlockStart: is_full_width_bg ? padding_block_start : '0',
+    paddingBlockEnd: is_full_width_bg ? padding_block_end : '0',
+    backgroundColor: is_full_width_bg ? background_color|default('noColor') : 'noColor'
+  })
+%}
+
+{% set section_content =
+  section.apply({
+    width: width|default('100%'),
+    paddingBlockStart: is_full_width_bg ? '0' : padding_block_start,
+    paddingBlockEnd: is_full_width_bg ? '0' : padding_block_end,
+    paddingLeft: padding_left|default('0'),
+    backgroundColor: is_full_width_bg ? 'noColor' : background_color|default('noColor')
+  })
+%}
+
+{% set background =
+  html_cva(
+    base: ['absolute', 'inset-0', 'z-[-1]'],
+    variants: {
+      backgroundColor: {
+        default: 'bg-none',
+        primary: 'bg-primary',
+        secondary: 'bg-secondary',
+        accent: 'bg-accent',
+        muted: 'bg-muted',
+        'base-200': 'bg-base-200',
+        blue: 'bg-radley-blue',
+        pink: 'bg-pink',
+        purple: 'bg-radley-purple',
+        'radley-blue': 'bg-radley-blue',
+        'radley-purple': 'bg-radley-purple',
+        noColor: 'bg-none'
+      },
+      backgroundImage: {
+        yes: 'opacity-50',
+        no: ''
+      }
+    }
+  )
+%}
+
+{% set background_classes =
+  background.apply({
+    backgroundColor: background_color|default('noColor'),
+    backgroundImage: has_background_image_variant
+  })
+%}
+
+{% set grid =
+  html_cva(
+    base: [
+      'grid w-full min-w-0',
+      'gap-4 @sm:gap-6 @3xl:gap-8',
+      '[&>*]:w-full [&>*]:min-w-0',
+      '[&_.view-content]:grid [&_.view-content]:w-full [&_.view-content]:min-w-0',
+      '[&_.view-content]:gap-4 [&_.view-content]:md:gap-6 [&_.view-content]:xl:gap-8'
+    ],
+    variants: {
+      columns: {
+        '100': 'grid-cols-1',
+        '50-50': 'md:grid-cols-2',
+        '33-33-33': 'md:grid-cols-3',
+        '75-25': 'md:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]',
+        '25-75': 'md:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]',
+        '67-33': 'md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]',
+        '33-67': 'md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]',
+        '50-25-25': 'md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)]',
+        '25-25-50': 'md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,2fr)]',
+        '25-25-25-25': 'sm:grid-cols-2 lg:grid-cols-4'
+      },
+      mobileColumns: {
+        '1': '',
+        '2': 'grid-cols-2',
+        '3': 'grid-cols-3',
+        '4': 'grid-cols-4'
+      },
+      viewsColumns: {
+        '100': '',
+        '50-50': '[&_.view-content]:md:grid-cols-2',
+        '33-33-33': '[&_.view-content]:md:grid-cols-3',
+        '25-25-25-25': '[&_.view-content]:sm:grid-cols-2 [&_.view-content]:lg:grid-cols-4'
+      }
+    },
+    compound_variants: [
+      {
+        columns: ['25-25-25-25'],
+        mobileColumns: ['2'],
+        class: 'sm:grid-cols-4'
+      }
+    ]
+  )
+%}
+
+{% set grid_classes =
+  grid.apply({
+    columns: columns|default('100'),
+    mobileColumns: mobile_columns|default('1'),
+    viewsColumns: views_columns|default('100')
+  })
+%}
+
+{% set header_spacing_map = {
+  small: 'mb-6 md:mb-8 xl:mb-10',
+  medium: 'mb-8 md:mb-12 xl:mb-16',
+  large: 'mb-12 md:mb-16 xl:mb-24',
+  xl: 'mb-16 md:mb-24 xl:mb-32'
+} %}
+
+{% set footer_spacing_map = {
+  small: 'mt-6 md:mt-8 xl:mt-10',
+  medium: 'mt-8 md:mt-12 xl:mt-16',
+  large: 'mt-12 md:mt-16 xl:mt-24',
+  xl: 'mt-16 md:mt-24 xl:mt-32'
+} %}
+
+{% set header_spacing_class = header_spacing_map[inner_spacing|default('small')] %}
+{% set footer_spacing_class = footer_spacing_map[inner_spacing|default('small')] %}
+
+<section{% if theme and theme != 'default' %} data-theme="{{ theme }}"{% endif %} class="{{ section_classes }} cq-full">
+  {% if is_full_width_bg %}
+    {# if there is background media #}
+    {% if background_media is not empty and background_media.src is not empty %}
+      {% block background_media_block %}
+        <div class="absolute inset-0 z-[-1]">
+          {% include 'canvas:image' ignore missing with {
+            src: background_media.src,
+            alt: background_media.alt,
+            class: 'object-cover w-full h-full',
+            width: background_media.width,
+            height: background_media.height
+          } only %}
+        </div>
+      {% endblock %}
+    {% endif %}
+
+    {# if there is background color (can work with or without background media) #}
+    {% if background_color is not empty and background_color != 'default' and background_color != 'noColor' %}
+      <div class="{{ background_classes }}"></div>
+    {% endif %}
+  {% endif %}
+
+  <div class="container mx-auto px-4 [&_.cq-full]:mx-0 [&_.cq-full]:w-full">
+    <div class="{{ section_content }} relative">
+      {% if not is_full_width_bg %}
+        {# if there is background media #}
+        {% if background_media is not empty and background_media.src is not empty %}
+          {% block background_media_block_boxed %}
+            <div class="absolute inset-0 z-[-1] overflow-hidden rounded-lg">
+              {% include 'canvas:image' ignore missing with {
+                src: background_media.src,
+                alt: background_media.alt,
+                class: 'object-cover w-full h-full',
+                width: background_media.width,
+                height: background_media.height
+              } only %}
+            </div>
+          {% endblock %}
+        {% endif %}
+
+        {# if there is background color (can work with or without background media) #}
+        {% if background_color is not empty and background_color != 'default' and background_color != 'noColor' %}
+          <div class="{{ background_classes }} rounded-lg"></div>
+        {% endif %}
+      {% endif %}
+      {% if section_header %}
+        {% set header_content %}
+          {% block header_slot %}
+
+          {% endblock %}
+        {% endset %}
+        {% if header_content|trim is not empty %}
+          <header class="{{ header_spacing_class }}">
+            {{ header_content }}
+          </header>
+        {% endif %}
+      {% endif %}
+
+      <div class="{{ grid_classes }}">
+        {% block main_slot %}
+
+        {% endblock %}
+      </div>
+
+      {% if section_footer %}
+        {% set footer_content %}
+          {% block footer_slot %}
+
+          {% endblock %}
+        {% endset %}
+        {% if footer_content|trim is not empty %}
+          <footer class="{{ footer_spacing_class }}">
+            {{ footer_content }}
+          </footer>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</section>

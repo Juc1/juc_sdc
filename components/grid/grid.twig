@@ -1,0 +1,85 @@
+{#
+/**
+ * @file
+ * grid.twig
+ *
+ * Lightweight, responsive CSS Grid layout container for equal-width columns
+ * and equal-height cards.
+ */
+#}
+
+{% set desktop_cols = columns|default('3') %}
+{% set tablet_cols = columns_tablet|default('auto') %}
+{% set mobile_cols = columns_mobile|default('1') %}
+{% set grid_gap = gap|default('md') %}
+{% set row_align = items_align|default('stretch') %}
+
+{# Desktop column class map #}
+{% set desktop_classes = {
+  '1': 'lg:grid-cols-1',
+  '2': 'lg:grid-cols-2',
+  '3': 'lg:grid-cols-3',
+  '4': 'lg:grid-cols-4',
+  '5': 'lg:grid-cols-5',
+  '6': 'lg:grid-cols-6'
+} %}
+
+{# Tablet column class map #}
+{% set tablet_classes = {
+  '1': 'md:grid-cols-1',
+  '2': 'md:grid-cols-2',
+  '3': 'md:grid-cols-3'
+} %}
+
+{# Mobile column class map #}
+{% set mobile_classes = {
+  '1': 'grid-cols-1',
+  '2': 'grid-cols-2'
+} %}
+
+{% set gap_classes = {
+  none: 'gap-0',
+  sm: 'gap-3 md:gap-4',
+  md: 'gap-4 md:gap-6',
+  lg: 'gap-6 md:gap-8',
+  xl: 'gap-8 md:gap-12'
+} %}
+
+{% set align_classes = {
+  stretch: 'items-stretch',
+  start: 'items-start',
+  center: 'items-center',
+  end: 'items-end'
+} %}
+
+{% set extra_classes = grid_classes|default('') %}
+{% if extra_classes is iterable %}
+  {% set extra_classes = extra_classes|join(' ') %}
+{% endif %}
+
+{% set resolved_tablet = tablet_cols != 'auto'
+  ? tablet_classes[tablet_cols]|default('md:grid-cols-2')
+  : (desktop_cols == '1' ? 'md:grid-cols-1' : 'md:grid-cols-2')
+%}
+
+{% set classes = [
+  'grid w-full min-w-0',
+  mobile_classes[mobile_cols]|default('grid-cols-1'),
+  resolved_tablet,
+  desktop_classes[desktop_cols]|default('lg:grid-cols-3'),
+  gap_classes[grid_gap]|default('gap-4 md:gap-6'),
+  align_classes[row_align]|default('items-stretch'),
+  '[&>*]:w-full [&>*]:min-w-0'
+]|filter(v => v is not empty) %}
+
+{% set grid_attributes = attributes is defined and attributes is not empty ? attributes : create_attribute() %}
+{% set grid_attributes = grid_attributes.addClass(classes) %}
+{% if extra_classes is not empty %}
+  {% set grid_attributes = grid_attributes.addClass(extra_classes|split(' ')) %}
+{% endif %}
+
+<div {{ grid_attributes }}>
+  {% block content %}
+    {{ content }}
+  {% endblock %}
+</div>

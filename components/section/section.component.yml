@@ -1,0 +1,244 @@
+"$schema": "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
+name: Section
+group: Layout
+status: stable
+props:
+  type: object
+  required:
+    - columns
+    - mobile_columns
+    - width
+    - margin_block_start
+    - margin_block_end
+    - padding_block_start
+    - padding_block_end
+    - inner_spacing
+    - theme
+    - background_color
+  properties:
+    width:
+      type: string
+      title: Section width
+      enum:
+        - "100%"
+        - "90%"
+        - "80%"
+        - "75%"
+        - "50%"
+        - "33%"
+      default: "100%"
+      examples:
+        - "100%"
+    columns:
+      type: string
+      title: Grid layout
+      description: Layout selected applies on desktop and tablet.
+      enum:
+        - "100"
+        - "50-50"
+        - "33-33-33"
+        - "25-25-25-25"
+        - "75-25"
+        - "25-75"
+        - "67-33"
+        - "33-67"
+        - "50-25-25"
+        - "25-25-50"
+      default: "50-50"
+      meta:enum:
+        "100": "1 Column (Full width)"
+        "50-50": "2 Columns (Equal: 50% / 50%)"
+        "33-33-33": "3 Columns (Equal: 33% / 33% / 33%)"
+        "25-25-25-25": "4 Columns (Equal: 25% / 25% / 25% / 25%)"
+        "75-25": "2 Columns (Wide left: 75% / 25%)"
+        "25-75": "2 Columns (Wide right: 25% / 75%)"
+        "67-33": "2 Columns (Split: 67% / 33%)"
+        "33-67": "2 Columns (Split: 33% / 67%)"
+        "50-25-25": "3 Columns (Hero left: 50% / 25% / 25%)"
+        "25-25-50": "3 Columns (Hero right: 25% / 25% / 50%)"
+      examples:
+        - "50-50"
+    views_columns:
+      type: string
+      title: Views grid
+      description: If you are using a view in this section, select the grid layout.
+      enum:
+        - "50-50"
+        - "33-33-33"
+        - "25-25-25-25"
+      meta:enum:
+        "50-50": "2 Columns (50% / 50%)"
+        "33-33-33": "3 Columns (33% / 33% / 33%)"
+        "25-25-25-25": "4 Columns (25% / 25% / 25% / 25%)"
+    mobile_columns:
+      type: string
+      title: Columns on mobile
+      enum:
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+      meta:enum:
+        "1": "1 Column"
+        "2": "2 Columns"
+        "3": "3 Columns"
+        "4": "4 Columns"
+      default: "1"
+      examples:
+        - "1"
+    margin_block_start:
+      type: string
+      title: Margin top
+      enum:
+        - "0"
+        - "8"
+        - "20"
+        - "32"
+        - "48"
+        - "64"
+        - "96"
+        - "128"
+        - "192"
+        - "256"
+      examples:
+        - "48"
+    margin_block_end:
+      type: string
+      title: Margin bottom
+      enum:
+        - "0"
+        - "8"
+        - "20"
+        - "32"
+        - "48"
+        - "64"
+        - "96"
+        - "128"
+        - "192"
+        - "256"
+      examples:
+        - "48"
+    padding_block_start:
+      type: string
+      title: Padding top
+      enum:
+        - "0"
+        - "16"
+        - "32"
+        - "64"
+      examples:
+        - "0"
+    padding_block_end:
+      type: string
+      title: Padding bottom
+      enum:
+        - "0"
+        - "16"
+        - "32"
+        - "64"
+      examples:
+        - "0"
+    padding_left:
+      type: string
+      title: Padding left
+      enum:
+        - "0"
+        - "8"
+        - "16"
+        - "32"
+        - "48"
+        - "64"
+        - "96"
+        - "128"
+      default: "0"
+      examples:
+        - "0"
+    inner_spacing:
+      type: string
+      title: Inner spacing
+      description: Spacing between header, grid and footer slots.
+      enum:
+        - small
+        - medium
+        - large
+        - xl
+      default: small
+      examples:
+        - small
+    theme:
+      type: string
+      title: "Color theme (affects children of this section)"
+      description: "Defines the color theme for all components inside this section."
+      enum:
+        - default
+        - blue
+        - pink
+        - purple
+      meta:enum:
+        default: "Inherit"
+        blue: "Radley Blue"
+        pink: "Pink"
+        purple: "Radley Purple"
+      default: default
+      examples:
+        - default
+    background_color:
+      type: string
+      title: "Background color (affects the section itself)"
+      description: "Sets the background color for this section box."
+      enum:
+        - default
+        - primary
+        - blue
+        - pink
+        - purple
+        - base-200
+        - secondary
+        - accent
+        - muted
+      meta:enum:
+        default: "None (Transparent)"
+        primary: "Inherit from parent"
+        blue: "Radley Blue"
+        pink: "Pink"
+        purple: "Radley Purple"
+        base-200: "Subtle Surface (Base 200)"
+        secondary: "Secondary"
+        accent: "Accent"
+        muted: "Muted"
+      default: default
+      examples:
+        - default
+    background_media:
+      $ref: json-schema-definitions://canvas.module/image
+      title: Background image
+      type: object
+    section_header:
+      type: boolean
+      title: Show header region
+      examples:
+        - true
+      default:
+        - true
+    section_footer:
+      type: boolean
+      title: Show footer region
+      examples:
+        - true
+      default:
+        - true
+    full_width_background:
+      type: boolean
+      title: Full width background
+      description: If enabled, the background spans 100% full screen width. If disabled, it matches the Section width.
+      examples:
+        - true
+      default: true
+
+slots:
+  header_slot:
+    title: "Header"
+  main_slot:
+    title: "Grid"
+  footer_slot:
+    title: "Footer"
