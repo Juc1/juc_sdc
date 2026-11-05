@@ -69,18 +69,19 @@
         '128': 'pl-20 md:pl-24 xl:pl-32'
       },
       backgroundColor: {
-        default: 'text-foreground',
-        primary: 'text-primary-foreground',
-        secondary: 'text-secondary-foreground',
-        accent: 'text-accent-foreground',
-        muted: 'text-muted-foreground',
+        default: 'text-base-content',
+        'base-100': 'text-base-content',
         'base-200': 'text-base-content',
-        blue: 'text-black',
-        pink: 'text-black',
-        purple: 'text-white',
-        'radley-blue': 'text-black',
-        'radley-purple': 'text-white',
-        noColor: 'text-foreground'
+        'base-300': 'text-base-content',
+        primary: 'text-primary-content',
+        secondary: 'text-secondary-content',
+        accent: 'text-accent-content',
+        neutral: 'text-neutral-content',
+        info: 'text-info-content',
+        success: 'text-success-content',
+        warning: 'text-warning-content',
+        error: 'text-error-content',
+        noColor: 'text-base-content'
       }
     }
   )
@@ -112,16 +113,17 @@
     variants: {
       backgroundColor: {
         default: 'bg-none',
+        'base-100': 'bg-base-100',
+        'base-200': 'bg-base-200',
+        'base-300': 'bg-base-300',
         primary: 'bg-primary',
         secondary: 'bg-secondary',
         accent: 'bg-accent',
-        muted: 'bg-muted',
-        'base-200': 'bg-base-200',
-        blue: 'bg-radley-blue',
-        pink: 'bg-pink',
-        purple: 'bg-radley-purple',
-        'radley-blue': 'bg-radley-blue',
-        'radley-purple': 'bg-radley-purple',
+        neutral: 'bg-neutral',
+        info: 'bg-info',
+        success: 'bg-success',
+        warning: 'bg-warning',
+        error: 'bg-error',
         noColor: 'bg-none'
       },
       backgroundImage: {

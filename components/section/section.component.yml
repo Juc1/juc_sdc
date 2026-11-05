@@ -171,41 +171,49 @@ props:
       description: "Defines the color theme for all components inside this section."
       enum:
         - default
-        - blue
-        - pink
-        - purple
+        - coffee
+        - light
+        - lemonade
+        - pagesoh
       meta:enum:
         default: "Inherit"
-        blue: "Radley Blue"
-        pink: "Pink"
-        purple: "Radley Purple"
+        coffee: "Coffee"
+        light: "Light"
+        lemonade: "Lemonade"
+        pagesoh: "Pagesoh"
       default: default
       examples:
         - default
     background_color:
       type: string
       title: "Background color (affects the section itself)"
-      description: "Sets the background color for this section box."
+      description: "Sets the background color for this section box based on DaisyUI color variables."
       enum:
         - default
-        - primary
-        - blue
-        - pink
-        - purple
+        - base-100
         - base-200
+        - base-300
+        - primary
         - secondary
         - accent
-        - muted
+        - neutral
+        - info
+        - success
+        - warning
+        - error
       meta:enum:
         default: "None (Transparent)"
-        primary: "Inherit from parent"
-        blue: "Radley Blue"
-        pink: "Pink"
-        purple: "Radley Purple"
-        base-200: "Subtle Surface (Base 200)"
+        base-100: "Base 100"
+        base-200: "Base 200"
+        base-300: "Base 300"
+        primary: "Primary"
         secondary: "Secondary"
         accent: "Accent"
-        muted: "Muted"
+        neutral: "Neutral"
+        info: "Info"
+        success: "Success"
+        warning: "Warning"
+        error: "Error"
       default: default
       examples:
         - default
