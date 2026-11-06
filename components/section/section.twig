@@ -4,9 +4,7 @@
 {% set has_background_image_variant = has_background_image ? 'yes' : 'no' %}
 
 {% set is_full_width_bg = true %}
-{% if
-  full_width_background is defined
-    and (full_width_background is same as(false) or full_width_background == '0' or full_width_background == 'false') %}
+{% if full_width_background is defined and (full_width_background is same as(false) or full_width_background is same as('false') or full_width_background is same as(0) or full_width_background is same as('0')) %}
   {% set is_full_width_bg = false %}
 {% endif %}
 
@@ -69,19 +67,19 @@
         '128': 'pl-20 md:pl-24 xl:pl-32'
       },
       backgroundColor: {
-        default: 'text-base-content',
-        'base-100': 'text-base-content',
-        'base-200': 'text-base-content',
-        'base-300': 'text-base-content',
-        primary: 'text-primary-content',
-        secondary: 'text-secondary-content',
-        accent: 'text-accent-content',
-        neutral: 'text-neutral-content',
-        info: 'text-info-content',
-        success: 'text-success-content',
-        warning: 'text-warning-content',
-        error: 'text-error-content',
-        noColor: 'text-base-content'
+        default: '',
+        'base-100': 'bg-base-100 text-base-content',
+        'base-200': 'bg-base-200 text-base-content',
+        'base-300': 'bg-base-300 text-base-content',
+        primary: 'bg-primary text-primary-content',
+        secondary: 'bg-secondary text-secondary-content',
+        accent: 'bg-accent text-accent-content',
+        neutral: 'bg-neutral text-neutral-content',
+        info: 'bg-info text-info-content',
+        success: 'bg-success text-success-content',
+        warning: 'bg-warning text-warning-content',
+        error: 'bg-error text-error-content',
+        noColor: ''
       }
     }
   )
@@ -107,39 +105,19 @@
   })
 %}
 
-{% set background =
-  html_cva(
-    base: ['absolute', 'inset-0', 'z-[-1]'],
-    variants: {
-      backgroundColor: {
-        default: 'bg-none',
-        'base-100': 'bg-base-100',
-        'base-200': 'bg-base-200',
-        'base-300': 'bg-base-300',
-        primary: 'bg-primary',
-        secondary: 'bg-secondary',
-        accent: 'bg-accent',
-        neutral: 'bg-neutral',
-        info: 'bg-info',
-        success: 'bg-success',
-        warning: 'bg-warning',
-        error: 'bg-error',
-        noColor: 'bg-none'
-      },
-      backgroundImage: {
-        yes: 'opacity-50',
-        no: ''
-      }
-    }
-  )
-%}
-
-{% set background_classes =
-  background.apply({
-    backgroundColor: background_color|default('noColor'),
-    backgroundImage: has_background_image_variant
-  })
-%}
+{% set bg_color_overlay_map = {
+  'base-100': 'bg-base-100',
+  'base-200': 'bg-base-200',
+  'base-300': 'bg-base-300',
+  primary: 'bg-primary',
+  secondary: 'bg-secondary',
+  accent: 'bg-accent',
+  neutral: 'bg-neutral',
+  info: 'bg-info',
+  success: 'bg-success',
+  warning: 'bg-warning',
+  error: 'bg-error'
+} %}
 
 {% set grid =
   html_cva(
@@ -211,47 +189,39 @@
 {% set header_spacing_class = header_spacing_map[inner_spacing|default('small')] %}
 {% set footer_spacing_class = footer_spacing_map[inner_spacing|default('small')] %}
 
-<section{% if theme and theme != 'default' %} data-theme="{{ theme }}"{% endif %} class="{{ section_classes }} cq-full">
-  {% if is_full_width_bg %}
-    {# if there is background media #}
-    {% if background_media is not empty and background_media.src is not empty %}
-      <div class="absolute inset-0 z-[-1]">
-        {% include 'canvas:image' ignore missing with {
-          src: background_media.src,
-          alt: background_media.alt,
-          class: 'object-cover w-full h-full',
-          width: background_media.width,
-          height: background_media.height
-        } only %}
-      </div>
-    {% endif %}
-
-    {# if there is background color (can work with or without background media) #}
-    {% if background_color is not empty and background_color != 'default' and background_color != 'noColor' %}
-      <div class="{{ background_classes }}"></div>
-    {% endif %}
+<section{% if theme and theme != 'default' %} data-theme="{{ theme }}"{% endif %} class="{{ section_classes }} cq-full{% if is_full_width_bg and has_background_image %} overflow-hidden{% endif %}">
+  {% if is_full_width_bg and has_background_image %}
+    {# Full-width background media layer #}
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+      {% include 'canvas:image' ignore missing with {
+        src: background_media.src,
+        alt: background_media.alt|default(''),
+        class: 'object-cover w-full h-full',
+        width: background_media.width,
+        height: background_media.height
+      } only %}
+      {% if background_color is defined and bg_color_overlay_map[background_color] is defined %}
+        <div class="absolute inset-0 {{ bg_color_overlay_map[background_color] }} opacity-50"></div>
+      {% endif %}
+    </div>
   {% endif %}
 
-  <div class="container mx-auto px-4 [&_.cq-full]:mx-0 [&_.cq-full]:w-full">
-    <div class="{{ section_content }} relative">
-      {% if not is_full_width_bg %}
-        {# if there is background media #}
-        {% if background_media is not empty and background_media.src is not empty %}
-          <div class="absolute inset-0 z-[-1] overflow-hidden rounded-lg">
-            {% include 'canvas:image' ignore missing with {
-              src: background_media.src,
-              alt: background_media.alt,
-              class: 'object-cover w-full h-full',
-              width: background_media.width,
-              height: background_media.height
-            } only %}
-          </div>
-        {% endif %}
-
-        {# if there is background color (can work with or without background media) #}
-        {% if background_color is not empty and background_color != 'default' and background_color != 'noColor' %}
-          <div class="{{ background_classes }} rounded-lg"></div>
-        {% endif %}
+  <div class="container mx-auto px-4 relative z-10 [&_.cq-full]:mx-0 [&_.cq-full]:w-full">
+    <div class="{{ section_content }} relative{% if not is_full_width_bg and (has_background_image or (background_color and background_color != 'default' and background_color != 'noColor')) %} rounded-lg{% endif %}{% if not is_full_width_bg and has_background_image %} overflow-hidden{% endif %}">
+      {% if not is_full_width_bg and has_background_image %}
+        {# Boxed background media layer #}
+        <div class="absolute inset-0 pointer-events-none overflow-hidden rounded-lg">
+          {% include 'canvas:image' ignore missing with {
+            src: background_media.src,
+            alt: background_media.alt|default(''),
+            class: 'object-cover w-full h-full',
+            width: background_media.width,
+            height: background_media.height
+          } only %}
+          {% if background_color is defined and bg_color_overlay_map[background_color] is defined %}
+            <div class="absolute inset-0 {{ bg_color_overlay_map[background_color] }} opacity-50"></div>
+          {% endif %}
+        </div>
       {% endif %}
       {% if section_header %}
         {% set header_content %}

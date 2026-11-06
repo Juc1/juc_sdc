@@ -1,6 +1,6 @@
 "$schema": "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
 name: WaveSurfer Audio Player
-group: Media
+group: Custom
 status: stable
 description: "Interactive SoundCloud-style audio waveform player powered by WaveSurfer.js."
 props:
