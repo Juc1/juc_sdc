@@ -13,7 +13,7 @@
 
 {% set group =
   html_cva(
-    base: ['flex', 'bg-none'],
+    base: ['flex'],
     variants: {
       flexDirection: {
         column: 'flex-col',
@@ -52,9 +52,18 @@
         xl: 'p-32'
       },
       background: {
-        primary: 'bg-primary',
-        secondary: 'bg-secondary',
-        accent: 'bg-accent'
+        default: '',
+        'base-100': 'bg-base-100 text-base-content',
+        'base-200': 'bg-base-200 text-base-content',
+        'base-300': 'bg-base-300 text-base-content',
+        primary: 'bg-primary text-primary-content',
+        secondary: 'bg-secondary text-secondary-content',
+        accent: 'bg-accent text-accent-content',
+        neutral: 'bg-neutral text-neutral-content',
+        info: 'bg-info text-info-content',
+        success: 'bg-success text-success-content',
+        warning: 'bg-warning text-warning-content',
+        error: 'bg-error text-error-content'
       }
     }
   )
@@ -68,7 +77,7 @@
     flexGap: flex_gap,
     radius: radius,
     padding: padding,
-    background: background
+    background: background|default('default')
   })
 %}
 

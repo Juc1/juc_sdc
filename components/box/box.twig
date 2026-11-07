@@ -1,0 +1,105 @@
+{#
+/**
+ * @file
+ * Component template for Box (`juc_sdc:box`).
+ *
+ * Single-item layout and styling wrapper for positioning (centering, alignment),
+ * padding, max-width, background colors, drop shadows, and borders.
+ */
+#}
+
+{% set box =
+  html_cva(
+    base: ['box-border'],
+    variants: {
+      align: {
+        stretch: 'w-full block',
+        start: 'flex justify-start items-start text-start',
+        center: 'flex justify-center items-center text-center',
+        end: 'flex justify-end items-end text-end'
+      },
+      boxAlign: {
+        default: '',
+        start: 'self-start',
+        center: 'self-center mx-auto',
+        end: 'self-end ms-auto'
+      },
+      padding: {
+        none: '',
+        xs: 'p-2',
+        sm: 'p-4',
+        md: 'p-8',
+        lg: 'p-16',
+        xl: 'p-32'
+      },
+      maxWidth: {
+        none: '',
+        xs: 'max-w-xs',
+        sm: 'max-w-sm',
+        md: 'max-w-md',
+        lg: 'max-w-lg',
+        xl: 'max-w-xl',
+        '2xl': 'max-w-2xl',
+        '3xl': 'max-w-3xl',
+        prose: 'max-w-prose',
+        full: 'max-w-full'
+      },
+      radius: {
+        none: '',
+        sm: 'rounded-sm',
+        md: 'rounded-md',
+        lg: 'rounded-lg',
+        xl: 'rounded-xl',
+        full: 'rounded-full'
+      },
+      background: {
+        default: '',
+        'base-100': 'bg-base-100 text-base-content',
+        'base-200': 'bg-base-200 text-base-content',
+        'base-300': 'bg-base-300 text-base-content',
+        primary: 'bg-primary text-primary-content',
+        secondary: 'bg-secondary text-secondary-content',
+        accent: 'bg-accent text-accent-content',
+        neutral: 'bg-neutral text-neutral-content',
+        info: 'bg-info text-info-content',
+        success: 'bg-success text-success-content',
+        warning: 'bg-warning text-warning-content',
+        error: 'bg-error text-error-content'
+      },
+      shadow: {
+        none: '',
+        sm: 'shadow-sm',
+        md: 'shadow-md',
+        lg: 'shadow-lg',
+        xl: 'shadow-xl'
+      },
+      border: {
+        none: '',
+        default: 'border border-base-300',
+        primary: 'border border-primary',
+        neutral: 'border border-neutral'
+      }
+    }
+  )
+%}
+
+{% set box_classes =
+  box.apply({
+    align: align|default('stretch'),
+    boxAlign: box_align|default('default'),
+    padding: padding|default('none'),
+    maxWidth: max_width|default('none'),
+    radius: radius|default('none'),
+    background: background|default('default'),
+    shadow: shadow|default('none'),
+    border: border|default('none')
+  })
+%}
+
+{% set box_attributes = box_attributes|default(create_attribute()) %}
+
+<div {{ box_attributes.addClass(box_classes) }}>
+  {% block content %}
+    {% block box_slot %}{% endblock %}
+  {% endblock %}
+</div>

@@ -2,6 +2,10 @@
 
 A flexible, responsive flexbox layout container component for Drupal Single Directory Components (SDC).
 
+> **When to use Group vs. Box**:
+> - Use **`juc_sdc:group`** for **2 or more items** that need flex direction (row/column/responsive) and gap spacing between them.
+> - Use **`juc_sdc:box`** when you want to wrap a **single component** to apply alignment/centering, padding, max-width, or background colors without multi-item flex overhead.
+
 ## Origins & Evolution
 Originally forked from `byte_theme/components/group` and enhanced for cross-application layout needs.
 

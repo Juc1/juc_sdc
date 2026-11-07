@@ -1,0 +1,187 @@
+$schema: "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
+name: Box
+description: "Single-item layout and styling wrapper for positioning (centering, alignment), padding, max-width, background, and borders."
+group: Custom
+status: stable
+props:
+  type: object
+  properties:
+    align:
+      type: string
+      title: Content alignment
+      description: "Horizontal alignment and positioning of the wrapped item."
+      enum:
+        - stretch
+        - start
+        - center
+        - end
+      meta:enum:
+        stretch: "Full width (Stretch)"
+        start: "Left / Start"
+        center: "Center"
+        end: "Right / End"
+      default: stretch
+      examples:
+        - stretch
+    box_align:
+      type: string
+      title: Box position
+      description: "Alignment of the box itself within its parent container."
+      enum:
+        - default
+        - start
+        - center
+        - end
+      meta:enum:
+        default: "Default (Inherit)"
+        start: "Left / Start"
+        center: "Center (mx-auto)"
+        end: "Right / End (ms-auto)"
+      default: default
+      examples:
+        - default
+    padding:
+      type: string
+      title: Padding
+      description: "Inner padding around the wrapped item."
+      enum:
+        - none
+        - xs
+        - sm
+        - md
+        - lg
+        - xl
+      meta:enum:
+        none: "None (0px)"
+        xs: "Extra-Small (8px)"
+        sm: "Small (16px)"
+        md: "Medium (32px)"
+        lg: "Large (64px)"
+        xl: "Extra-Large (128px)"
+      default: none
+      examples:
+        - sm
+    max_width:
+      type: string
+      title: Max Width
+      description: "Maximum width limit of the box."
+      enum:
+        - none
+        - xs
+        - sm
+        - md
+        - lg
+        - xl
+        - 2xl
+        - 3xl
+        - prose
+        - full
+      meta:enum:
+        none: "None"
+        xs: "Extra-Small (20rem / 320px)"
+        sm: "Small (24rem / 384px)"
+        md: "Medium (28rem / 448px)"
+        lg: "Large (32rem / 512px)"
+        xl: "Extra-Large (36rem / 576px)"
+        2xl: "2X-Large (42rem / 672px)"
+        3xl: "3X-Large (48rem / 768px)"
+        prose: "Prose (Reading width)"
+        full: "Full (100%)"
+      default: none
+      examples:
+        - none
+    radius:
+      type: string
+      title: Rounded corners
+      description: "Corner border radius."
+      enum:
+        - none
+        - sm
+        - md
+        - lg
+        - xl
+        - full
+      meta:enum:
+        none: "None"
+        sm: "Small"
+        md: "Medium"
+        lg: "Large"
+        xl: "Extra-Large"
+        full: "Full (Pill / Circle)"
+      default: none
+      examples:
+        - sm
+    background:
+      type: string
+      title: Background color
+      description: "Background color using semantic DaisyUI color variables."
+      enum:
+        - default
+        - base-100
+        - base-200
+        - base-300
+        - primary
+        - secondary
+        - accent
+        - neutral
+        - info
+        - success
+        - warning
+        - error
+      meta:enum:
+        default: "None (Transparent)"
+        base-100: "Base 100"
+        base-200: "Base 200"
+        base-300: "Base 300"
+        primary: "Primary"
+        secondary: "Secondary"
+        accent: "Accent"
+        neutral: "Neutral"
+        info: "Info"
+        success: "Success"
+        warning: "Warning"
+        error: "Error"
+      default: default
+      examples:
+        - default
+    shadow:
+      type: string
+      title: Shadow
+      description: "Drop shadow elevation."
+      enum:
+        - none
+        - sm
+        - md
+        - lg
+        - xl
+      meta:enum:
+        none: "None"
+        sm: "Small"
+        md: "Medium"
+        lg: "Large"
+        xl: "Extra-Large"
+      default: none
+      examples:
+        - none
+    border:
+      type: string
+      title: Border
+      description: "Optional border styling."
+      enum:
+        - none
+        - default
+        - primary
+        - neutral
+      meta:enum:
+        none: "None"
+        default: "Subtle (Border base-300)"
+        primary: "Primary color border"
+        neutral: "Neutral color border"
+      default: none
+      examples:
+        - none
+
+slots:
+  content:
+    title: "Box Content"
+    description: "The single component or content item wrapped by this box."

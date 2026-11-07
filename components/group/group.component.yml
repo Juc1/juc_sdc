@@ -1,5 +1,6 @@
 "$schema": "https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json"
 name: Group
+description: "Flexbox layout container for orchestrating multiple items in rows, columns, or responsive stacks with gap spacing. For styling/positioning a single item, use Box."
 group: Custom
 status: stable
 props:
@@ -102,13 +103,34 @@ props:
       type: string
       title: Background color
       enum:
+        - default
+        - base-100
+        - base-200
+        - base-300
         - primary
         - secondary
         - accent
+        - neutral
+        - info
+        - success
+        - warning
+        - error
       meta:enum:
-        primary: Primary
-        secondary: Secondary
-        accent: Accent
+        default: "None (Transparent)"
+        base-100: "Base 100"
+        base-200: "Base 200"
+        base-300: "Base 300"
+        primary: "Primary"
+        secondary: "Secondary"
+        accent: "Accent"
+        neutral: "Neutral"
+        info: "Info"
+        success: "Success"
+        warning: "Warning"
+        error: "Error"
+      default: default
+      examples:
+        - default
 
 slots:
   group_slot:
