@@ -9,6 +9,7 @@ A modular, framework-agnostic collection of reusable Single Directory Components
 - **[Group](components/group/README.md)** (`juc_sdc:group`): Flexible, responsive flexbox layout container supporting responsive directions (`responsive-md`, `responsive-lg`), gaps, alignments, and padding.
 - **[Section](components/section/)** (`juc_sdc:section`): Powerful CSS Grid page section container supporting 1 to 4 column layouts (`33-33-33`, `25-25-25-25`), header/main/footer slots, backgrounds, margins, and padding.
 - **[Icon](components/icon/README.md)** (`juc_sdc:icon`): Accessible SVG icon component supporting the Phosphor icon set, semantic color mapping, sizing presets, and optional link wrapping.
+- **[Icon Text](components/icon-text/README.md)** (`juc_sdc:icon-text`): Inline icon alongside a text label or clickable link for contact details, addresses, and feature callouts.
 - **[WaveSurfer Audio Player](components/wavesurfer/README.md)** (`juc_sdc:wavesurfer`): Interactive SoundCloud-style audio waveform player powered by WaveSurfer.js with progressive streaming, 15-second skip buttons, and optional file download.
 
 ## Installation
