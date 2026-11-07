@@ -99,7 +99,5 @@
 {% set box_attributes = box_attributes|default(create_attribute()) %}
 
 <div {{ box_attributes.addClass(box_classes) }}>
-  {% block content %}
-    {% block box_slot %}{% endblock %}
-  {% endblock %}
+  {% block content %}{% endblock %}
 </div>
