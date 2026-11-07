@@ -22,11 +22,11 @@ props:
       type: string
       title: Text Content
       description: "The text string to display (e.g. address, phone number, email)."
-      default: "193 Whitecross Street, London"
+      default: "123 Example Street"
       examples:
-        - "193 Whitecross Street, London"
+        - "123 Example Street"
         - "020 7123 4567"
-        - "info@whitecross.com"
+        - "hello@example.com"
     url:
       type: string
       title: Link URL (optional)
